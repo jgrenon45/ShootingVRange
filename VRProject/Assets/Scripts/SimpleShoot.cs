@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 [AddComponentMenu("Nokobot/Modern Guns/Simple Shoot")]
 public class SimpleShoot : MonoBehaviour
@@ -16,9 +19,21 @@ public class SimpleShoot : MonoBehaviour
     [SerializeField] private Transform casingExitLocation;
 
     [Header("Settings")]
-    [Tooltip("Specify time to destory the casing object")] [SerializeField] private float destroyTimer = 2f;
+    [Tooltip("Specify time to destroy the casing object")] [SerializeField] private float destroyTimer = 2f;
     [Tooltip("Bullet Speed")] [SerializeField] private float shotPower = 500f;
     [Tooltip("Casing Ejection Speed")] [SerializeField] private float ejectPower = 150f;
+    [Tooltip("Time between shots"), SerializeField] private float shootDelay = 0.2f;
+
+    [Space, SerializeField] private AudioSource audioSource;
+    [Space, SerializeField] private AudioClip gunshot;
+    [Space, SerializeField] private AudioClip addMag;
+    [Space, SerializeField] private AudioClip removeMag;
+    [Space, SerializeField] private AudioClip dryfire;
+
+    public Magazine currentMag;
+    public XRBaseInteractor socketInteractor;
+
+    private float lastShot;
 
 
     void Start()
@@ -28,15 +43,21 @@ public class SimpleShoot : MonoBehaviour
 
         if (gunAnimator == null)
             gunAnimator = GetComponentInChildren<Animator>();
+
+        socketInteractor.selectEntered.AddListener(AddMagazine);
+        socketInteractor.selectExited.AddListener(RemoveMagazine);
     }
 
-    void Update()
+    public void PullTrigger()
     {
-        //If you want a different input, change it here
-        if (Input.GetButtonDown("Fire1"))
+        if(currentMag && currentMag.ammoCount > 0)
         {
             //Calls animation on the gun that has the relevant animation events that will fire
             gunAnimator.SetTrigger("Fire");
+        }
+        else
+        {
+            audioSource.PlayOneShot(dryfire);
         }
     }
 
@@ -58,8 +79,33 @@ public class SimpleShoot : MonoBehaviour
         if (!bulletPrefab)
         { return; }
 
+        if (lastShot > Time.time) return;
+
+        lastShot = Time.time + shootDelay;
+
+        ShootSound();
+
         // Create a bullet and add force on it in direction of the barrel
         Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation).GetComponent<Rigidbody>().AddForce(barrelLocation.forward * shotPower);
+
+        currentMag.ammoCount--;
+
+    }
+
+    public void AddMagazine(SelectEnterEventArgs args)
+    {
+        var test = args.interactableObject;
+        currentMag = args.interactableObject.transform.GetComponent<Magazine>();
+        audioSource.PlayOneShot(addMag);
+    }
+
+    public void RemoveMagazine(SelectExitEventArgs args)
+    {
+        currentMag = null;
+        audioSource.PlayOneShot(removeMag);
+    }
+    public void Slide()
+    {
 
     }
 
@@ -80,6 +126,13 @@ public class SimpleShoot : MonoBehaviour
 
         //Destroy casing after X seconds
         Destroy(tempCasing, destroyTimer);
+    }
+
+    private void ShootSound()
+    {
+        var randomPitch = Random.Range(0.8f, 1.2f);
+        audioSource.pitch = randomPitch;
+        audioSource.PlayOneShot(gunshot);
     }
 
 }
