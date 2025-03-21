@@ -6,17 +6,16 @@ public class Target : MonoBehaviour
     [SerializeField] private int minScore = 1;
     [SerializeField] private float maxRadius = 0.5f;
     [SerializeField] private Transform targetCenter;
+    [SerializeField] private Transform pointsTransform;
     [SerializeField] private GameObject floatingTextPrefab;
     private int ringCount = 10;
 
     public void TargetHit(Vector3 hitPoint)
     {               
         int score = CalculateScore(hitPoint);
-        Debug.Log(score);
         ShowFloatingText(hitPoint, score);
         ScoreManager.instance.AddScore(score);      
     }
-   
 
     int CalculateScore(Vector3 hitPosition)
     {
@@ -26,13 +25,13 @@ public class Target : MonoBehaviour
         // Normalize distance (0 = center, 1 = max radius)
         float normalizedDistance = Mathf.Clamp01(distance / maxRadius);
 
-        if (distance < maxRadius * 0.1f) return 10; // Bullseye
+        if (distance < maxRadius * 0.1f) return maxScore; // Bullseye
         if (distance < maxRadius * 0.3f) return 9;
         if (distance < maxRadius * 0.5f) return 7;
         if (distance < maxRadius * 0.7f) return 5;
         if (distance < maxRadius * 0.9f) return 3;
 
-        return 1; 
+        return minScore; 
     }
 
     void OnDrawGizmos()
@@ -60,11 +59,12 @@ public class Target : MonoBehaviour
         }
     }
 
-    void ShowFloatingText(Vector3 position, int score)
+    void ShowFloatingText(Vector3 hitPos, int score)
     {
         if (floatingTextPrefab)
         {
-            GameObject textObj = Instantiate(floatingTextPrefab, position, Quaternion.identity);
+            hitPos = new Vector3(hitPos.x, hitPos.y + 0.1f, hitPos.z);
+            GameObject textObj = Instantiate(floatingTextPrefab, hitPos, targetCenter.rotation);
             textObj.GetComponent<FloatingText>().SetText(score.ToString());
         }
     }

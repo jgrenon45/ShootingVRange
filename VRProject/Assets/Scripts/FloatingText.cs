@@ -5,8 +5,9 @@ public class FloatingText : MonoBehaviour
 {
     public float lifetime = 1.5f; // Time before disappearing
     public float floatSpeed = 1.0f; // How fast it moves up
-    public TextMeshPro textMesh;
+    public TMP_Text textMesh;
     private Color startColor;
+    private float time = 0;
 
     void Start()
     {
@@ -20,8 +21,9 @@ public class FloatingText : MonoBehaviour
         transform.position += Vector3.up * floatSpeed * Time.deltaTime;
 
         // Gradually fade out
-        float fadeAmount = Mathf.Clamp01(lifetime - Time.timeSinceLevelLoad);
+        float fadeAmount = Mathf.Clamp01(lifetime - time);
         textMesh.color = new Color(startColor.r, startColor.g, startColor.b, fadeAmount);
+        time += Time.deltaTime;
     }
 
     public void SetText(string text)
