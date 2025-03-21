@@ -23,6 +23,7 @@ public class SimpleShoot : MonoBehaviour
     [Tooltip("Bullet Speed")] [SerializeField] private float shotPower = 500f;
     [Tooltip("Casing Ejection Speed")] [SerializeField] private float ejectPower = 150f;
     [Tooltip("Time between shots"), SerializeField] private float shootDelay = 0.2f;
+    [Tooltip("Range of the shot"), SerializeField] private float shotRange = 10f;
 
     [Space, SerializeField] private AudioSource audioSource;
     [Space, SerializeField] private AudioClip gunshot;
@@ -85,6 +86,18 @@ public class SimpleShoot : MonoBehaviour
 
         ShootSound();
 
+        RaycastHit hit;
+        if(Physics.Raycast(barrelLocation.position,barrelLocation.forward, out hit, shotRange))
+        {
+            Debug.Log(hit.transform.name);
+            Target target = hit.transform.GetComponent<Target>();
+            if (target)
+            {
+                target.TargetHit(hit.point);
+                Debug.DrawRay(barrelLocation.position, barrelLocation.forward * shotRange, Color.green, 5);
+            }
+        }
+        
         // Create a bullet and add force on it in direction of the barrel
         Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation).GetComponent<Rigidbody>().AddForce(barrelLocation.forward * shotPower);
 
