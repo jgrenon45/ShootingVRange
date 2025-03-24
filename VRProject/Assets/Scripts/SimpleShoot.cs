@@ -107,7 +107,6 @@ public class SimpleShoot : MonoBehaviour
 
     public void AddMagazine(SelectEnterEventArgs args)
     {
-        var test = args.interactableObject;
         currentMag = args.interactableObject.transform.GetComponent<Magazine>();
         audioSource.PlayOneShot(addMag);
     }
