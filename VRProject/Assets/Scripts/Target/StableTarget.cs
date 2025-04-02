@@ -1,23 +1,18 @@
 using UnityEngine;
 
-public class Target : MonoBehaviour
+public class StableTarget : Target
 {
-    [SerializeField] private int maxScore = 10;
-    [SerializeField] private int minScore = 1;
+    [Header("Hit Zone Parameters")]
     [SerializeField] private float maxRadius = 0.5f;
-    [SerializeField] private Transform targetCenter;
-    [SerializeField] private Transform pointsTransform;
-    [SerializeField] private GameObject floatingTextPrefab;
+
     private int ringCount = 10;
 
-    public void TargetHit(Vector3 hitPoint)
-    {               
-        int score = CalculateScore(hitPoint);
-        ShowFloatingText(hitPoint, score);
-        ScoreManager.instance.AddScore(score);      
+    public override void TargetHit(Vector3 hitPoint)
+    {
+        base.TargetHit(hitPoint);
     }
 
-    int CalculateScore(Vector3 hitPosition)
+    protected override int CalculateScore(Vector3 hitPosition)
     {
         // Measure distance between the hit and the target center
         float distance = Vector3.Distance(targetCenter.position, hitPosition);
@@ -32,6 +27,16 @@ public class Target : MonoBehaviour
         if (distance < maxRadius * 0.9f) return 3;
 
         return minScore; 
+    }
+
+    protected override void ShowFloatingText(Vector3 hitPos, int score)
+    {
+        if (floatingTextPrefab)
+        {
+            hitPos = new Vector3(hitPos.x, hitPos.y + 0.1f, hitPos.z);
+            GameObject textObj = Instantiate(floatingTextPrefab, hitPos, targetCenter.rotation);
+            textObj.GetComponent<FloatingText>().SetText(score.ToString());
+        }
     }
 
     void OnDrawGizmos()
@@ -56,16 +61,6 @@ public class Target : MonoBehaviour
 
             Gizmos.DrawLine(prevPoint, newPoint);
             prevPoint = newPoint;
-        }
-    }
-
-    void ShowFloatingText(Vector3 hitPos, int score)
-    {
-        if (floatingTextPrefab)
-        {
-            hitPos = new Vector3(hitPos.x, hitPos.y + 0.1f, hitPos.z);
-            GameObject textObj = Instantiate(floatingTextPrefab, hitPos, targetCenter.rotation);
-            textObj.GetComponent<FloatingText>().SetText(score.ToString());
         }
     }
 }
