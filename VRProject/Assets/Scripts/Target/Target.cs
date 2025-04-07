@@ -11,12 +11,15 @@ public class Target : MonoBehaviour
     [SerializeField] protected GameObject floatingTextPrefab;
     [SerializeField] protected Transform targetCenter;
 
+    private TestManager tests = TestManager.GetInstance();
 
     public virtual void TargetHit(Vector3 hitPoint)
     {
         int score = CalculateScore(hitPoint);
         ShowFloatingText(hitPoint, score);
         ScoreManager.instance.AddScore(score);
+        tests.IncreaseScore(score);
+        tests.WriteToJSONIfFinished();
     }
 
     protected virtual int CalculateScore(Vector3 hitPosition)

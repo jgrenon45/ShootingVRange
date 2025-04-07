@@ -9,6 +9,7 @@ public class SimpleShoot : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject casingPrefab;
     public GameObject muzzleFlashPrefab;
+    
 
     [Header("Location Refrences")]
     [SerializeField] private Animator gunAnimator;
@@ -32,7 +33,7 @@ public class SimpleShoot : MonoBehaviour
     public XRBaseInteractor socketInteractor;
 
     private float lastShot;
-
+    private TestManager tests = TestManager.GetInstance();
 
     void Start()
     {
@@ -52,6 +53,7 @@ public class SimpleShoot : MonoBehaviour
         {
             //Calls animation on the gun that has the relevant animation events that will fire
             gunAnimator.SetTrigger("Fire");
+            tests.StartTimer();
         }
         else
         {
@@ -99,7 +101,7 @@ public class SimpleShoot : MonoBehaviour
         Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation).GetComponent<Rigidbody>().AddForce(barrelLocation.forward * shotPower);
 
         currentMag.ammoCount--;
-
+        tests.increaseAmmo();
     }
 
     public void AddMagazine(SelectEnterEventArgs args)
