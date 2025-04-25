@@ -33,7 +33,7 @@ public class SimpleShoot : MonoBehaviour
     public XRBaseInteractor socketInteractor;
 
     private float lastShot;
-    private TestManager tests = TestManager.GetInstance();
+    private bool firstShoot = true; //Used to start the timer
 
     void Start()
     {
@@ -49,11 +49,16 @@ public class SimpleShoot : MonoBehaviour
 
     public void PullTrigger()
     {
-        if(currentMag && currentMag.ammoCount > 0)
+        if(firstShoot)
+        {
+            //Start timer when shooting for the first time
+            firstShoot = false;
+            ScoreManager.instance.StartTimer();
+        }
+        if (currentMag && currentMag.ammoCount > 0)
         {
             //Calls animation on the gun that has the relevant animation events that will fire
             gunAnimator.SetTrigger("Fire");
-            tests.StartTimer();
         }
         else
         {
@@ -101,7 +106,7 @@ public class SimpleShoot : MonoBehaviour
         Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation).GetComponent<Rigidbody>().AddForce(barrelLocation.forward * shotPower);
 
         currentMag.ammoCount--;
-        tests.increaseAmmo();
+        ScoreManager.instance.IncreaseAmmo();
     }
 
     public void AddMagazine(SelectEnterEventArgs args)

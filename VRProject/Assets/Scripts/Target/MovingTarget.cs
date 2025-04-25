@@ -15,6 +15,7 @@ public class MovingTarget : Target
     [SerializeField] private float rotationTime = 1f; // Speed of rotation
     [SerializeField] private Vector3 rotationAxis = Vector3.up; // Axis of rotation
 
+    [SerializeField] private float respawnTime = 3f;
 
     private Vector3 startPosition;
     private Fracture fractureComponent;
@@ -61,11 +62,17 @@ public class MovingTarget : Target
     {
         base.TargetHit(hitPoint);
         fractureComponent.CauseFracture();
+        Invoke("Respawn", respawnTime);
     }    
 
     public void Explode()
     {
         rb.constraints = RigidbodyConstraints.None;
         rb.linearVelocity = new Vector3(10, 0, 0);
+    }
+
+    private void Respawn()
+    {
+        gameObject.SetActive(true);
     }
 }
