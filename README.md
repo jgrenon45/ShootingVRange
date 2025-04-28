@@ -5,15 +5,16 @@ Mettez votre précision à l’épreuve en visant différentes cibles dans un en
 # Description du projet 📜
 ShootingVRange est une simulation de tir simple où les joueurs peuvent pratiquer leur visée.
 Fonctionnalités principales :
-- Système de tir fonctionnel
-- Cibles réactives lorsqu'elles sont touchées
-- Système de score de base
+- Système de tir fonctionnel avec rechargement
+- Cibles immobile, mouvante et réactives lorsqu'elles sont touchées
+- Système de score de base avec rétroactions
 - Environnement simple et épuré
 
-Ce projet a été réalisé pour démontrer des compétences fondamentales avec Unity, notamment :
-- Interaction entre objets de jeu
+Ce projet a été réalisé pour démontrer des compétences fondamentales en réalité virtuelle avec Unity, notamment :
+- Déplacement simple et compréhensible
+- Interaction entre le joueur et les objets
 - Détection de collision avec raycast
-- Interface utilisateur simple pour le suivi du score
+- Interface utilisateur simple pour le suivi du score et du temps
 - Mise en place de scènes et d'éclairages
 
 # Comment jouer 🚀
