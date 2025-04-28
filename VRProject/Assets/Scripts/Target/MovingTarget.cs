@@ -14,8 +14,10 @@ public class MovingTarget : Target
     [SerializeField] private float rotationSpeed = 30f; // Speed of rotation
     [SerializeField] private float rotationTime = 1f; // Speed of rotation
     [SerializeField] private Vector3 rotationAxis = Vector3.up; // Axis of rotation
-
+	
+	[Header("Respawn")]
     [SerializeField] private float respawnTime = 3f;
+	[SerializeField] private bool shouldRespawn = true;
 
     private Vector3 startPosition;
     private Fracture fractureComponent;
@@ -73,6 +75,9 @@ public class MovingTarget : Target
 
     private void Respawn()
     {
-        gameObject.SetActive(true);
+		if(shouldRespawn)
+		{			
+			gameObject.SetActive(true);
+		}
     }
 }
