@@ -188,7 +188,7 @@ MonoBehaviour:
   - {fileID: 5452194525151164870}
   m_InteractionLayers:
     m_Bits: 2
-  m_DistanceCalculationMode: 1
+  m_DistanceCalculationMode: 0
   m_SelectMode: 0
   m_FocusMode: 1
   m_CustomReticle: {fileID: 0}

@@ -1,7 +1,17 @@
 {
   "dependencies": {
+    "com.dgreenheck.openfracture": {
+      "version": "https://github.com/dgreenheck/OpenFracture.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.30",
+        "com.unity.testtools.codecoverage": "1.0.1"
+      },
+      "hash": "6d0ddff64173193f024638c2de2dbeb8a2525965"
+    },
     "com.unity.burst": {
-      "version": "1.8.19",
+      "version": "1.8.18",
       "depth": 2,
       "source": "registry",
       "dependencies": {
@@ -52,7 +62,7 @@
         "com.unity.ide.rider": "3.0.31",
         "com.unity.editorcoroutines": "1.0.0",
         "com.unity.performance.profile-analyzer": "1.2.3",
-        "com.unity.test-framework": "1.4.6",
+        "com.unity.test-framework": "1.4.5",
         "com.unity.testtools.codecoverage": "1.2.6"
       }
     },
@@ -111,6 +121,13 @@
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.4",
       "depth": 3,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -189,7 +206,7 @@
       }
     },
     "com.unity.test-framework": {
-      "version": "1.4.6",
+      "version": "1.4.5",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -241,7 +258,7 @@
       }
     },
     "com.unity.xr.core-utils": {
-      "version": "2.5.1",
+      "version": "2.5.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -279,7 +296,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.legacyinputhelpers": {
-      "version": "2.1.12",
+      "version": "2.1.11",
       "depth": 1,
       "source": "registry",
       "dependencies": {

@@ -98,6 +98,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 45ACP Bullet_Head
       objectReference: {fileID: 0}
+    - target: {fileID: 3625037896966406280, guid: 9e0ef2cf9cfc11c46bbe7f28b272f6fb, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 8403992145370945202, guid: 9e0ef2cf9cfc11c46bbe7f28b272f6fb, type: 3}
       propertyPath: m_UseGravity
       value: 1
@@ -149,6 +153,22 @@ PrefabInstance:
     - target: {fileID: 8535412081993147290, guid: 9e0ef2cf9cfc11c46bbe7f28b272f6fb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100654289512178833, guid: 9e0ef2cf9cfc11c46bbe7f28b272f6fb, type: 3}
+      propertyPath: m_Height
+      value: 0.012280418
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100654289512178833, guid: 9e0ef2cf9cfc11c46bbe7f28b272f6fb, type: 3}
+      propertyPath: m_Radius
+      value: 0.0050954837
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100654289512178833, guid: 9e0ef2cf9cfc11c46bbe7f28b272f6fb, type: 3}
+      propertyPath: m_Center.x
+      value: 0.0002544187
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100654289512178833, guid: 9e0ef2cf9cfc11c46bbe7f28b272f6fb, type: 3}
+      propertyPath: m_Center.z
+      value: 0.0034351442
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

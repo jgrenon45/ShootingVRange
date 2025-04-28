@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 [AddComponentMenu("Nokobot/Modern Guns/Simple Shoot")]
@@ -12,6 +9,7 @@ public class SimpleShoot : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject casingPrefab;
     public GameObject muzzleFlashPrefab;
+    
 
     [Header("Location Refrences")]
     [SerializeField] private Animator gunAnimator;
@@ -23,6 +21,7 @@ public class SimpleShoot : MonoBehaviour
     [Tooltip("Bullet Speed")] [SerializeField] private float shotPower = 500f;
     [Tooltip("Casing Ejection Speed")] [SerializeField] private float ejectPower = 150f;
     [Tooltip("Time between shots"), SerializeField] private float shootDelay = 0.2f;
+    [Tooltip("Range of the shot"), SerializeField] private float shotRange = 10f;
 
     [Space, SerializeField] private AudioSource audioSource;
     [Space, SerializeField] private AudioClip gunshot;
@@ -34,7 +33,7 @@ public class SimpleShoot : MonoBehaviour
     public XRBaseInteractor socketInteractor;
 
     private float lastShot;
-
+    private bool firstShoot = true; //Used to start the timer
 
     void Start()
     {
@@ -50,7 +49,13 @@ public class SimpleShoot : MonoBehaviour
 
     public void PullTrigger()
     {
-        if(currentMag && currentMag.ammoCount > 0)
+        if(firstShoot)
+        {
+            //Start timer when shooting for the first time
+            firstShoot = false;
+            ScoreManager.instance.StartTimer();
+        }
+        if (currentMag && currentMag.ammoCount > 0)
         {
             //Calls animation on the gun that has the relevant animation events that will fire
             gunAnimator.SetTrigger("Fire");
@@ -85,16 +90,27 @@ public class SimpleShoot : MonoBehaviour
 
         ShootSound();
 
+        RaycastHit hit;
+        if(Physics.Raycast(barrelLocation.position,barrelLocation.forward, out hit, shotRange))
+        {
+            Debug.Log(hit.transform.name);
+            Target target = hit.transform.GetComponent<Target>();
+            if (target)
+            {
+                target.TargetHit(hit.point);
+                Debug.DrawRay(barrelLocation.position, barrelLocation.forward * shotRange, Color.green, 5);
+            }
+        }
+        
         // Create a bullet and add force on it in direction of the barrel
         Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation).GetComponent<Rigidbody>().AddForce(barrelLocation.forward * shotPower);
 
         currentMag.ammoCount--;
-
+        ScoreManager.instance.IncreaseAmmo();
     }
 
     public void AddMagazine(SelectEnterEventArgs args)
     {
-        var test = args.interactableObject;
         currentMag = args.interactableObject.transform.GetComponent<Magazine>();
         audioSource.PlayOneShot(addMag);
     }
